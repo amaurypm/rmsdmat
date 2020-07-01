@@ -6,7 +6,7 @@ using BioStructures
 
 function parse_commandline()
     s = ArgParseSettings()
-    s.description = "Superimpose a set of structures and report a RSMD matrix, in CSV and Mega-compatible formats."
+    s.description = "Superimpose a set of protein structures and report a RSMD matrix, in CSV and Mega-compatible formats."
     s.version = "1.0"
     s.add_version = true
 
