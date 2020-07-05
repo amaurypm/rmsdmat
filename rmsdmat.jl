@@ -7,7 +7,7 @@ using BioStructures
 function parse_commandline()
     s = ArgParseSettings()
     s.description = "Superimpose a set of protein structures and report a RSMD matrix, in CSV and Mega-compatible formats."
-    s.version = "1.0"
+    s.version = "1.1"
     s.add_version = true
 
     @add_arg_table! s begin
@@ -50,6 +50,7 @@ end
 
 function get_format(filename::String)
     format = nothing
+
     base_name, ext = splitext(basename(filename))
 
     if lowercase(ext) == ".pdb" || lowercase(ext) == "ent"
@@ -69,12 +70,17 @@ end
 
 function read_structure(filename::String)
     format = get_format(filename)
+    structure = nothing
+
     if isnothing(format)
-        write(stderr, "ERROR: File $filename does not appear to be a structure file.\n")
         return
     end
 
-    structure = read(filename, format)
+    try
+        structure = read(filename, format)
+    catch
+        return
+    end
 
     structure
 
@@ -141,24 +147,21 @@ function main()
     struct2 = nothing
 
     # These cicle has to transverse the lower left corner of the matrix, excluding the diagonal.
-    for i in 1:n
-        for j in 1:n
-            if i > j
-                if isfile(unique_files[i]) && isfile(unique_files[j])
-                    struct1 = read_structure(unique_files[i])
-                    struct2 = read_structure(unique_files[j])
+    for c in 1:(n - 1)
+        struct1 = read_structure(unique_files[c])
+        if isnothing(struct1)
+            write(stderr, "ERROR: $(unique_files[c]) is not a proper structure file. Exiting...\n")
+            exit(1)
+        end
 
-                    if isnothing(struct1) || isnothing(struct2)
-                        write(stderr, "ERROR: Non-structure files provided. Exiting...\n")
-                        exit(1)
-                    end
-
-                    rmsd_mat[i, j] = rmsd(struct1, struct2)
-                else
-                    write(stderr, "ERROR: At least one of the provided file names does not correspond with a real file.\n")
-                    exit(1)
-                end
+        for r in (c + 1):n
+            struct2 = read_structure(unique_files[r])
+            if isnothing(struct2)
+                write(stderr, "ERROR: $(unique_files[r]) is not a proper structure file. Exiting...\n")
+                exit(1)
             end
+
+            rmsd_mat[r, c] = rmsd(struct1, struct2)
         end
     end
 
