@@ -26,6 +26,7 @@ function parse_commandline()
 end
 
 function write_csv(filename::String, struct_names::Array{String, 1}, mat::Array{Float64,2})
+    println("Writing $filename")
     open(filename, "w") do output_file
         write(output_file, "structures")
         for struct_name in struct_names
@@ -97,6 +98,7 @@ function get_basenames(file_names::Array{String,1})
 end
 
 function write_meg(filename::String, struct_names::Array{String,1}, mat::Array{Float64,2})
+    println("Writing $filename")
     open(filename, "w") do output_file
         write(output_file, "#mega\n")
         write(output_file, "!Title: RMSD matrix;\n")
@@ -161,11 +163,17 @@ function main()
                 exit(1)
             end
 
+            println("$(unique_files[c]) vs $(unique_files[r])")
+
             rmsd_mat[r, c] = rmsd(struct1, struct2)
+
+            @printf("rmsd = %.1f\n\n", rmsd_mat[r, c])
         end
     end
 
     struct_names = get_basenames(unique_files)
+
+    println()
 
     write_csv(parsed_args["output"]*".csv", struct_names, rmsd_mat)
     write_meg(parsed_args["output"]*".meg", struct_names, rmsd_mat)
