@@ -15,7 +15,7 @@ non-conserved sequence is excluded, as there is not equivalent residue to compar
 No Pymol-like RMSD optimization cycles are done (where more different atoms are progressively excluded to improve
 the fitting), all equivalent CA are compared, so the RMSD values reported by this programs are
 generally larger that the ones reported by Pymol and equivalent software (but perhaps make more
-sense?)
+sense?). For Pymol-like RMSD values use [pyrmsdmat](https://github.com/amaurypm/pyrmsdmat).
 
 ## Usage
 ```
