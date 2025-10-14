@@ -3,6 +3,7 @@
 using ArgParse
 using Printf
 using BioStructures
+using BioAlignments
 
 function parse_commandline()
     s = ArgParseSettings()
