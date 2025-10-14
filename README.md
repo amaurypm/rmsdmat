@@ -42,4 +42,4 @@ This script depends on the following Julia packages:
 * ArgParse
 * Printf
 * BioStructures
-
+* BioAlignments
