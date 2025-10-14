@@ -55,13 +55,13 @@ function get_format(filename::String)
     base_name, ext = splitext(basename(filename))
 
     if lowercase(ext) == ".pdb" || lowercase(ext) == "ent"
-        format = PDB
+        format = PDBFormat
 
     elseif lowercase(ext) == ".cif"
-        format = MMCIF
+        format = MMCIFFormat
 
     elseif lowercase(ext) == ".mmtf"
-        format = MMTF
+        format = MMTFFormat
 
     end
 
