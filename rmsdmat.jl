@@ -8,7 +8,7 @@ using BioAlignments
 function parse_commandline()
     s = ArgParseSettings()
     s.description = "Superimpose a set of protein structures and report a RSMD matrix, in CSV and Mega-compatible formats."
-    s.version = "1.1"
+    s.version = "1.2"
     s.add_version = true
 
     @add_arg_table! s begin
