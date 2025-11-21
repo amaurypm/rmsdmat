@@ -124,7 +124,7 @@ function write_meg(filename::String, struct_names::Array{String,1}, mat::Array{F
                     @printf(output_file, "[%2d]   ", i)
                 end
                 if i > j
-                    @printf(output_file, "%9.3g", mat[i,j])
+                    @printf(output_file, "%9.3f", mat[i,j])
                 else
                     write(output_file, repeat(" ", 9))
                 end
